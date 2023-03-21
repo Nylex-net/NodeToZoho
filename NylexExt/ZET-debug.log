@@ -71,3 +71,15 @@ Error: error:0308010C:digital envelope routines::unsupported
     at C:\Users\henry\Documents\NodeToZoho\NylexExt\node_modules\webpack\lib\NormalModule.js:853:4
     at processResult (C:\Users\henry\Documents\NodeToZoho\NylexExt\node_modules\webpack\lib\NormalModule.js:624:11)
     at C:\Users\henry\Documents\NodeToZoho\NylexExt\node_modules\webpack\lib\NormalModule.js:675:5
+[error] [2023-03-21T19:26:05.825Z] : uncaughtException: error:0308010C:digital envelope routines::unsupported
+Error: error:0308010C:digital envelope routines::unsupported
+    at new Hash (node:internal/crypto/hash:71:19)
+    at Object.createHash (node:crypto:133:10)
+    at BulkUpdateDecorator.hashFactory (C:\Users\henry\Documents\NodeToZoho\NylexExt\node_modules\webpack\lib\util\createHash.js:138:18)
+    at BulkUpdateDecorator.update (C:\Users\henry\Documents\NodeToZoho\NylexExt\node_modules\webpack\lib\util\createHash.js:44:50)
+    at RawSource.updateHash (C:\Users\henry\Documents\NodeToZoho\NylexExt\node_modules\webpack-sources\lib\RawSource.js:64:8)
+    at NormalModule._initBuildHash (C:\Users\henry\Documents\NodeToZoho\NylexExt\node_modules\webpack\lib\NormalModule.js:736:17)
+    at handleParseResult (C:\Users\henry\Documents\NodeToZoho\NylexExt\node_modules\webpack\lib\NormalModule.js:800:10)
+    at C:\Users\henry\Documents\NodeToZoho\NylexExt\node_modules\webpack\lib\NormalModule.js:853:4
+    at processResult (C:\Users\henry\Documents\NodeToZoho\NylexExt\node_modules\webpack\lib\NormalModule.js:624:11)
+    at C:\Users\henry\Documents\NodeToZoho\NylexExt\node_modules\webpack\lib\NormalModule.js:675:5
