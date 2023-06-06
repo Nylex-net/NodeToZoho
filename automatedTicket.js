@@ -1,5 +1,5 @@
 let config = {
-    code:'1000.be5a0fd59dadcfc2857e3013624edaf5.92af34e26866cdf94e35f21804a9e488',
+    code:'1000.5a20fd25a635a3aea3501e0536ea3706.0ba078623fff25789708d20f62d0cbfb',
     client_id: '1000.LZAWBOTEYQ2MYNCVATLVEECK367TIB',
     client_secret: '7d3e6fdbd93812879c39567fd7f450859330adf8b8',
     scope: "Desk.tickets.ALL,Desk.settings.READ,Desk.basic.READ",
@@ -42,7 +42,7 @@ async function Ticket() {
     return response.json(); // parses JSON response into native JavaScript objects
   }
 
-async function reauthorize() {
+async function reauthorizeCall() {
   // Default options are marked with *
   const response = await fetch("https://accounts.zoho.com/oauth/v2/token?refresh="+config.grant.refresh_token+"&client_id="+config.client_id+"&client_secret="+config.client_secret+"&scope="+config.scope+"&redirect_uri="+config.redirect_uri + "&grant_type=refresh_token", {
     method: "POST", // *GET, POST, PUT, DELETE, etc.
@@ -55,20 +55,30 @@ async function reauthorize() {
     // },
     redirect: "follow", // manual, *follow, error
     referrerPolicy: "no-referrer"// no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-  }).then(response => {
-    response = response.json();
+  });
+  return JSON.stringify(response.json());
+}
+
+function reauthorize() {
+  reauthorizeCall().then(response => {
     if(response.hasOwnProperty("access_token")) {
       config.grant.access_token = response.access_token;
+      config.grant.expires_in = response.expires_in;
       console.log("Reauthorized.");
+      // Test to see if reauthorization worked by creating a ticket.
       Ticket().then(res => console.log(res)).catch(error => console.error(error));
     }
-  }).catch(err => console.error(err));// parses JSON response into native JavaScript objects
+    else {
+      console.log("Something else went wrong\n" + response);
+    }// parses JSON response into native JavaScript objects
+  }).catch(err => console.error(err));
 }
 
   oauthgrant().then((data) => {
     if(data.hasOwnProperty("access_token")) {
         config["grant"] = data;
-        console.log("Refreshing in " + (config.grant.expires_in * 1000) + " miliseconds.");
+        console.log(config);
+        console.log("Refreshing in " + (config.grant.expires_in * 1000) + " miliseconds."); // expires_in is in the form of seconds.
         setInterval(reauthorize, config.grant.expires_in * 1000);
     }
     else {
