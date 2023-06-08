@@ -1,5 +1,5 @@
 let config = {
-    code:'1000.5fe39762d0b1e56c8a14b06560d44fc1.f2faab8c9aa7b21a3560637f5da21122',
+    code:'1000.27a129f5a42e474f3487f3511d5fb406.17eeb09caad288a255e19de91bb89657',
     client_id: '1000.LZAWBOTEYQ2MYNCVATLVEECK367TIB',
     client_secret: '7d3e6fdbd93812879c39567fd7f450859330adf8b8',
     scope: "Desk.tickets.ALL,Desk.settings.READ,Desk.basic.READ",
@@ -32,12 +32,12 @@ async function Ticket() {
       credentials: "same-origin", // include, *same-origin, omit
       headers: {
         "orgId": "749689656",
-        "Authorization":"Zoho-oauthtoken 1000.f39be4698696ee5c826264d5440eab51.0789573a97fb89a4e5861abbcdb3d1be",
+        "Authorization":"Zoho-oauthtoken " + config.grant.access_token,
         "Content-Type": "application/json"
       },
       redirect: "follow", // manual, *follow, error
       referrerPolicy: "no-referrer",// no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-      body: JSON.stringify({"subject":"[TEST] Error Report", "departmentId":"601361000000006907","description":"This is a test for a new feature upon PPI error.", "contactId":"601361000030806189", "assigneeId":"601361000016556001"})
+      body: JSON.stringify({"subject":"[TEST] Error Report", "departmentId":"601361000000006907","description":"This ticket was created using Zoho Desk's API.", "contactId":"601361000030806189", "assigneeId":"601361000016556001"})
     });
     return response.json(); // parses JSON response into native JavaScript objects
   }
@@ -79,8 +79,8 @@ function reauthorize() {
     if(data.hasOwnProperty("access_token")) {
         config["grant"] = data;
         console.log(config);
-        console.log("Refreshing in " + 60000 + " miliseconds."); // expires_in is in the form of seconds.
-        setInterval(reauthorize, 60000);
+        console.log("Refreshing in " + 3500000 + " miliseconds."); // expires_in is in the form of seconds.
+        setInterval(reauthorize, 3500000);
     }
     else {
       console.log(data);
