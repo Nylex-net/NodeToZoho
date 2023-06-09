@@ -1,11 +1,11 @@
 let config = {
-    code:'1000.27a129f5a42e474f3487f3511d5fb406.17eeb09caad288a255e19de91bb89657',
+    code:'1000.8be8929dd13f81540e89afb51e0f5c39.abe8a4d049c1c2da0722cf975163b625',
     client_id: '1000.LZAWBOTEYQ2MYNCVATLVEECK367TIB',
     client_secret: '7d3e6fdbd93812879c39567fd7f450859330adf8b8',
     scope: "Desk.tickets.ALL,Desk.settings.READ,Desk.basic.READ",
     redirect_uri:"https://www.zylker.com/oauthgrant"
 };
-
+// https://accounts.zoho.com/oauth/v2/auth?response_type=code&client_id=1000.B7FVSMWP8YY5EQ83VMZ4UXR6XSRP2W&scope=Desk.tickets.ALL,Desk.settings.READ,Desk.basic.READ&redirect_uri=https://www.zylker.com/oauthgrant&state=-5466400890088961855
 async function oauthgrant() {
     // Default options are marked with *
     const response = await fetch("https://accounts.zoho.com/oauth/v2/token?code="+config.code+"&grant_type=authorization_code&client_id="+config.client_id+"&client_secret="+config.client_secret+"&redirect_uri="+config.redirect_uri + "&access_type=offline", {
@@ -49,10 +49,11 @@ async function reauthorizeCall() {
     mode: "cors", // no-cors, *cors, same-origin
     cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
     credentials: "same-origin", // include, *same-origin, omit
-    // headers: {
-    //   "orgId": "749689656",
-    //   "Authorization": "Zoho-oauthtoken 1000.a8bb31bcbee40b64afe002a17e5d0a6f.7c3885f16eda2b152bbf79f8171012d7"
-    // },
+    headers: {
+      "orgId": "749689656",
+      "Authorization": "Zoho-oauthtoken 1000.a8bb31bcbee40b64afe002a17e5d0a6f.7c3885f16eda2b152bbf79f8171012d7",
+      "Content-Type": "application/json"
+    },
     redirect: "follow", // manual, *follow, error
     referrerPolicy: "no-referrer"// no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
   });
@@ -62,12 +63,13 @@ async function reauthorizeCall() {
 function reauthorize() {
   reauthorizeCall().then(response => {
     if(response.status === 200) {
-      const reauthJSON = response.json();
+      const reauthJSON = JSON.stringify(response);
+      console.log(reauthJSON);
       config.grant.access_token = (reauthJSON.hasOwnProperty("access_token"))?reauthJSON.access_token:config.grant.access_token;
       config.grant.expires_in = (reauthJSON.hasOwnProperty("expires_in"))?reauthJSON.expires_in:config.grant.expires_in;
       console.log("Reauthorized.");
       // Test to see if reauthorization worked by creating a ticket.
-      Ticket().then(res => console.log(res)).catch(error => console.error(error));
+      // Ticket().then(res => console.log(res)).catch(error => console.error(error));
     }
     else {
       console.log("Something else went wrong\n" + response);
@@ -79,8 +81,8 @@ function reauthorize() {
     if(data.hasOwnProperty("access_token")) {
         config["grant"] = data;
         console.log(config);
-        console.log("Refreshing in " + 3500000 + " miliseconds."); // expires_in is in the form of seconds.
-        setInterval(reauthorize, 3500000);
+        console.log("Refreshing in " + 10000 + " miliseconds."); // expires_in is in the form of seconds.
+        setInterval(reauthorize, 10000);
     }
     else {
       console.log(data);
