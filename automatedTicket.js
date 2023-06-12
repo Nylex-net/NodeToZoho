@@ -1,5 +1,5 @@
 let config = {
-    code:'1000.f4c5ece29aec5002d741224b00807f89.57a13256e0699aa363441735fe229224',
+    code:'1000.612ce6cbf803f3d2f075b2e807da4be2.e7e90ac36c628df7c4a9d52c9ac3a87b',
     client_id: '1000.LZAWBOTEYQ2MYNCVATLVEECK367TIB',
     client_secret: '7d3e6fdbd93812879c39567fd7f450859330adf8b8',
     scope: "Desk.tickets.ALL,Desk.settings.READ,Desk.basic.READ",
@@ -8,7 +8,7 @@ let config = {
 
 async function oauthgrant() {
     // Default options are marked with *
-    const response = await fetch("https://accounts.zoho.com/oauth/v2/token?code="+config.code+"&grant_type=authorization_code&client_id="+config.client_id+"&client_secret="+config.client_secret+"&redirect_uri="+config.redirect_uri + "&access_type=offline", {
+    const response = await fetch("https://accounts.zoho.com/oauth/v2/token?code="+config.code+"&grant_type=authorization_code&client_id="+config.client_id+"&client_secret="+config.client_secret+"&redirect_uri="+config.redirect_uri, {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
       mode: "cors", // no-cors, *cors, same-origin
       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -59,7 +59,7 @@ async function reauthorizeCall() {
   });
     return response.json();
 }
-// https://accounts.zoho.com/oauth/v2/auth?refresh_token=1000.ec1babcd36b74b340c144d3d4855cdb4.880adf201ef084825422885673a0ee7b&client_id=1000.B7FVSMWP8YY5EQ83VMZ4UXR6XSRP2W&client_secret=7d3e6fdbd93812879c39567fd7f450859330adf8b8&scope=Desk.tickets.ALL,Desk.settings.READ,Desk.basic.READ&redirect_uri=https://www.zylker.com/oauthgrant&grant_type=refresh_token
+
 function reauthorize() {
   reauthorizeCall().then(response => {
     if(response.hasOwnProperty("access_token")) {
